@@ -10,22 +10,24 @@
     <link href="https://vidoomy.com/demos_new/plantillas_demos_v2/styles.css" rel="stylesheet" type="text/css">
     <script type="text/javascript">
 	
-	top.window.VD_CONFIG = {
-        divId: 'googletag-slider-ad', 
-        tagId: '/22243774984/Pubmatic_TestPage_300x250',
-        sizes: [[300, 250]],
-        extraMarginBottom: 0,
-        position: 'right',
-        closeText: 'CLOSE AD',
-        adjustHeightIfAnchorBannerIsDetected: false,
-        ovelapAnchorBanner: false,
-        attemps: 1
-    };
+top.window.VD_CONFIG = {
+    divId: 'googletag-slider-ad',
+    tagId: '/22243774984/Pubmatic_TestPage_Interstitial',
+    sizes: [[1, 1]], // Interstitial ads usually have sizes like 1x1 or fullscreen
+    extraMarginBottom: 0,
+    position: 'center', // Center the interstitial ad
+    closeText: 'CLOSE AD',
+    adjustHeightIfAnchorBannerIsDetected: false,
+    ovelapAnchorBanner: false,
+    attemps: 1,
+    interstitial: true, // Custom parameter to indicate this is an interstitial
+    fullscreen: true // Ensure the ad covers the entire screen
+};
 
-    var adxBunlde = document.createElement('script');
-    adxBunlde.src = 'https://vpaid.vidoomy.com/adx/adx-bundle-prebid-v0.0.12_pubmatic_test_vidoomypbjs.js';
-    adxBunlde.async = true;
-    top.document.head.appendChild(adxBunlde);
+var adxBunlde = document.createElement('script');
+adxBunlde.src = 'https://vpaid.vidoomy.com/adx/adx-bundle-prebid-v0.0.12_pubmatic_test_vidoomypbjs.js';
+adxBunlde.async = true;
+top.document.head.appendChild(adxBunlde);
 
     </script>
 
