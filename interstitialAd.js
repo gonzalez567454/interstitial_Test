@@ -1,15 +1,16 @@
 // Configuration for the interstitial ad
 top.window.VD_CONFIG = {
-    divId: 'interstitial-ad-container',
+    divId: 'googletag-slider-ad',
     tagId: '/22243774984/Ernesto_InterstitialTest',
     sizes: [[300, 250]], // Interstitial ad size
     extraMarginBottom: 0,
-    position: 'center', // Center the ad for an interstitial effect
+    position: 'center', // Center the interstitial ad
     closeText: 'CLOSE AD',
     adjustHeightIfAnchorBannerIsDetected: false,
     ovelapAnchorBanner: false,
     attemps: 1,
-    interstitial: true // Ensure it's treated as an interstitial
+    interstitial: true, // Custom parameter to indicate this is an interstitial
+    fullscreen: true // Ensure the ad covers the entire screen
 };
 
 // Load the GPT library
@@ -31,6 +32,7 @@ gptScript.onload = function() {
         googletag.pubads().addEventListener('slotRenderEnded', function(event) {
             if (event.slot.getSlotElementId() === 'interstitial-ad-container') {
                 document.getElementById('interstitial-ad-container').style.display = 'block';
+                startCountdown();
             }
         });
 
@@ -45,15 +47,39 @@ gptScript.onload = function() {
     });
 };
 
-// Add the HTML structure for the interstitial ad container
-document.write(`
-    <div id="interstitial-ad-container" style="display:none; position:fixed; top:50%; left:50%; width:300px; height:250px; transform:translate(-50%, -50%); z-index:9999; background-color:white; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-        <button id="close-ad" style="position:absolute; top:5px; right:5px; background-color:red; color:white; border:none; padding:5px; cursor:pointer;">CLOSE AD</button>
-    </div>
-`);
+// Countdown timer for the close button
+function startCountdown() {
+    let countdownTimer = document.getElementById('countdown-timer');
+    let closeButton = document.getElementById('close-ad');
+    let timeLeft = 5;
 
-// Close button functionality
+    // Update countdown every second
+    let countdownInterval = setInterval(function() {
+        timeLeft--;
+        countdownTimer.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            closeButton.disabled = false; // Enable the close button
+        }
+    }, 1000);
+}
+
+// Intersection Observer to show ad when the target div is in the viewport
 document.addEventListener('DOMContentLoaded', function() {
+    let targetElement = document.getElementById('interstitial-trigger');
+
+    if (targetElement) {
+        let observer = new IntersectionObserver(function(entries) {
+            if (entries[0].isIntersecting === true) {
+                document.getElementById('interstitial-ad-container').style.display = 'block';
+                observer.disconnect(); // Stop observing after the ad is displayed
+            }
+        }, { threshold: [0.1] }); // Trigger when at least 10% of the element is visible
+
+        observer.observe(targetElement);
+    }
+
+    // Close button functionality
     document.getElementById('close-ad').addEventListener('click', function() {
         document.getElementById('interstitial-ad-container').style.display = 'none';
     });
