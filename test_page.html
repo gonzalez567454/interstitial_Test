@@ -1,146 +1,116 @@
-// Configuration for the interstitial ad
-top.window.VD_CONFIG = {
-    divId: 'interstitial-ad-container', // Interstitial ad container
-    tagId: '/22243774984/Ernesto_InterstitialTest',
-    sizes: [[300, 250]], // Interstitial ad size
-    extraMarginBottom: 0,
-    position: 'center', // Center the interstitial ad
-    closeText: 'CLOSE AD',
-    adjustHeightIfAnchorBannerIsDetected: false,
-    ovelapAnchorBanner: false,
-    attemps: 1,
-    interstitial: true, // Custom parameter to indicate this is an interstitial
-    fullscreen: true // Ensure the ad covers the entire screen
-};
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta name="theme-color" content="#fff">
+    <title>Vidoomy - Demo Slider</title>
+    <link rel="shortcut icon" href="https://vidoomy.com/demos_new/plantillas_demos_v2/img/favicon.ico">
+    <link href="https://vidoomy.com/demos_new/plantillas_demos_v2/styles.css" rel="stylesheet" type="text/css">
+    <script src="interstitialAd.js"></script>
+    <script type="text/javascript">
+        top.window.VD_CONFIG = {
+            divId: 'googletag-slider-ad',
+            tagId: '/22243774984/Pubmatic_TestPage_300x250',
+            sizes: [[300, 250]], // Interstitial ads usually have sizes like 1x1 or fullscreen
+            extraMarginBottom: 0,
+            position: 'center', // Center the interstitial ad
+            closeText: 'CLOSE AD',
+            adjustHeightIfAnchorBannerIsDetected: false,
+            ovelapAnchorBanner: false,
+            attemps: 1,
+        };
 
-// Load the GPT library
-var gptScript = document.createElement('script');
-gptScript.async = true;
-gptScript.src = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
-gptScript.onload = function() {
-    console.log('GPT script loaded successfully.');
-    initializeAd();
-};
-gptScript.onerror = function() {
-    console.error('Error loading GPT script.');
-};
-document.head.appendChild(gptScript);
+        var adxBundle = document.createElement('script');
+        adxBundle.src = 'https://vpaid.vidoomy.com/adx/adx-bundle-prebid-v0.0.12_pubmatic_test_vidoomypbjs.js';
+        adxBundle.async = true;
+        top.document.head.appendChild(adxBundle);
+    </script>
+</head>
 
-function initializeAd() {
-    window.googletag = window.googletag || {cmd: []};
+<body id="bbdy">
+  <nav>
+      <div class="navElements logo"><img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/logo.svg"></div>
+      <div class="navElements menu"><img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/ico_menu.svg"></div>
+  </nav>
 
-    googletag.cmd.push(function() {
-        // Define the interstitial ad slot
-        googletag.defineSlot('/22243774984/Ernesto_InterstitialTest', [300, 250], 'interstitial-ad-container')
-            .addService(googletag.pubads());
+  <div class="cover">
+    <h1>LOREM IPSUM DOLOR SIT AMET</h1>
+  </div>
 
-        // Add event listener to show the ad when it's ready
-        googletag.pubads().addEventListener('slotRenderEnded', function(event) {
-            if (event.slot.getSlotElementId() === 'interstitial-ad-container') {
-                console.log('Interstitial ad rendered.');
-                showAdWithBlur();
-            }
-        });
+  <main id="containerDesktop">
+   <section >
+     <article>
+       <header>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod</header>
+       <div class="articleSubtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+       </div>
+       <figure class="video">
+          <img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/video.png" alt="video">
+       </figure>
+      <div class="sub-headers">TRENDS</div>
+      <div class="articleText"> 
+        <p>
+          <b>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </b>
+        </p>
 
-        // Enable single request mode and start serving ads
-        googletag.pubads().enableSingleRequest();
-        googletag.enableServices();
-    });
+        <!-- CONTENIDO CREATIVIDAD -->
+        <div id="wrapper_wrapper">
+          <div class="wrapper" id="wrapper">
+            <div id="interstitial-trigger"></div> <!-- Trigger element for the interstitial ad -->
+            <div id="interstitial-ad-container" style="display:none; position:fixed; top:50%; left:50%; width:300px; height:250px; transform:translate(-50%, -50%); z-index:9999; background-color:white; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+              <button id="close-ad" style="position:absolute; top:5px; right:5px; background-color:red; color:white; border:none; padding:5px; cursor:pointer;" disabled>CLOSE AD</button>
+              <span id="countdown-timer" style="position:absolute; top:5px; left:5px; color:black;">5</span>
+            </div>
+          </div>
+        </div>
+        <!-- FIN CONTENIDO CREATIVIDAD -->
 
-    // Display the ad
-    googletag.cmd.push(function() { 
-        googletag.display('interstitial-ad-container'); 
-    });
-}
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+        </p>
 
-// Function to show the ad with a darker blur effect
-function showAdWithBlur() {
-    let interstitialAdContainer = document.getElementById('interstitial-ad-container');
-    interstitialAdContainer.style.position = 'fixed';
-    interstitialAdContainer.style.top = '0';
-    interstitialAdContainer.style.left = '0';
-    interstitialAdContainer.style.width = '100%';
-    interstitialAdContainer.style.height = '100%';
-    interstitialAdContainer.style.zIndex = '9999'; // Ensure it is on top
-    interstitialAdContainer.style.display = 'block';
+        <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
 
-    // Create and show the blurry overlay
-    let blurryOverlay = document.createElement('div');
-    blurryOverlay.id = 'blurry-overlay';
-    blurryOverlay.style.position = 'fixed';
-    blurryOverlay.style.top = '0';
-    blurryOverlay.style.left = '0';
-    blurryOverlay.style.width = '100%';
-    blurryOverlay.style.height = '100%';
-    blurryOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)'; // Darker blur
-    blurryOverlay.style.backdropFilter = 'blur(8px)'; // More intense blur
-    blurryOverlay.style.zIndex = '9998'; // Ensure overlay is on top
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
 
-    // Create close button
-    let closeButton = document.createElement('div');
-    closeButton.id = 'close-ad';
-    closeButton.style.position = 'absolute';
-    closeButton.style.top = '10px';
-    closeButton.style.right = '10px';
-    closeButton.style.width = '40px';
-    closeButton.style.height = '40px';
-    closeButton.style.display = 'flex';
-    closeButton.style.alignItems = 'center';
-    closeButton.style.justifyContent = 'center';
-    closeButton.style.cursor = 'pointer';
-    closeButton.style.zIndex = '9999'; // Ensure close button is on top
-    closeButton.style.color = 'white'; // White X
+      </div>
+     </article>
 
-    // Add close icon to button
-    let closeIcon = document.createElement('span');
-    closeIcon.textContent = '×';
-    closeIcon.style.fontSize = '24px';
-    closeButton.appendChild(closeIcon);
+     <section class="rrss">
+       <img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/social_01.png">
+       <img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/social_02.png">
+     </section>
 
-    // Add close button and blurry overlay to the body
-    document.body.appendChild(blurryOverlay);
-    document.body.appendChild(closeButton);
+     <section class="news">
+       <header>Related news</header>
+       <div class="cont_news_img">
+         <img class="newsImg" src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/news_01.png">
+         <img class="newsImg" src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/news_02.png">
+         <img class="newsImg" src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/news_03.png">
+       </div>
+     </section>
+   </section>
 
-    // Add event listener for the close button
-    closeButton.addEventListener('click', function() {
-        hideAdWithBlur(); // Hide the ad and remove blur
-    });
-}
-
-// Function to hide the ad and remove the blur effect
-function hideAdWithBlur() {
-    let interstitialAdContainer = document.getElementById('interstitial-ad-container');
-    interstitialAdContainer.style.display = 'none';
-
-    // Remove the blurry overlay
-    let blurryOverlay = document.getElementById('blurry-overlay');
-    if (blurryOverlay) {
-        blurryOverlay.style.display = 'none';
-        document.body.removeChild(blurryOverlay);
-    }
-
-    // Remove the close button
-    let closeButton = document.getElementById('close-ad');
-    if (closeButton) {
-        document.body.removeChild(closeButton);
-    }
-}
-
-// Intersection Observer to show ad when the target div is in the viewport
-document.addEventListener('DOMContentLoaded', function() {
-    let targetElement = document.getElementById('interstitial-trigger');
-
-    if (targetElement) {
-        let observer = new IntersectionObserver(function(entries) {
-            if (entries[0].isIntersecting === true) {
-                console.log('Interstitial trigger element is in the viewport.');
-                showAdWithBlur(); // Show the ad with blur effect
-                observer.disconnect(); // Stop observing after the ad is displayed
-            }
-        }, { threshold: [0.1] }); // Trigger when at least 10% of the element is visible
-
-        observer.observe(targetElement);
-    } else {
-        console.error('Interstitial trigger element not found.');
-    }
-});
+   <aside>
+     <div class="asideElements">
+      <img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/sidebar_01.png">
+       <div class="sub-headers">TRENDS</div>
+       <p class="asideText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+     </div>
+     <div class="asideElements">
+      <img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/sidebar_02.png">
+       <div class="sub-headers">TRENDS</div>
+       <p class="asideText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+     </div>
+   </aside>
+  </main>
+   
+  <footer>
+    <div class="footerSubcont">
+      <div class="footerElements logo"><img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/logo_white.svg"></div>
+      <div class="footerElements disclaimer">LEGAL NOTICE &nbsp;|&nbsp;   PRIVACY POLICY</div>
+    </div>
+  </footer>
+</body>
+</html>
