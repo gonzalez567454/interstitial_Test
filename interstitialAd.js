@@ -23,15 +23,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function startCountdown() {
         countdownValue = 5;
         countdownTimer.textContent = countdownValue;
-        closeButton.disabled = true; // Disable close button initially
+        countdownTimer.style.display = 'block'; // Show the countdown timer
+        closeButton.style.display = 'none'; // Hide the close button initially
 
         countdownInterval = setInterval(function() {
             countdownValue--;
             countdownTimer.textContent = countdownValue;
             if (countdownValue <= 0) {
                 clearInterval(countdownInterval);
-                closeButton.disabled = false; // Enable close button
-                countdownTimer.style.display = 'none'; // Hide the timer
+                countdownTimer.style.display = 'none'; // Hide the countdown timer
+                closeButton.style.display = 'block'; // Show the close button
             }
         }, 1000);
     }
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
         startCountdown();
     }
 
-    // Function to hide the interstitial ad
+    // Function to hide the interstitial ad and blurry overlay
     function hideInterstitial() {
         adContainer.style.display = 'none';
         blurryOverlay.style.display = 'none'; // Hide the blurry overlay
