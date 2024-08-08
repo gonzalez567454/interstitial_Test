@@ -1,6 +1,6 @@
 // Configuration for the interstitial ad
 top.window.VD_CONFIG = {
-    divId: 'interstitial-ad-container',
+    divId: 'interstitial-ad-container', // Interstitial ad container
     tagId: '/22243774984/Ernesto_InterstitialTest',
     sizes: [[300, 250]], // Interstitial ad size
     extraMarginBottom: 0,
@@ -54,11 +54,17 @@ function initializeAd() {
     });
 }
 
-// Function to show the ad with a blur effect
+// Function to show the ad with a darker blur effect
 function showAdWithBlur() {
     let adContainer = document.getElementById('interstitial-ad-container');
+    adContainer.style.position = 'fixed';
+    adContainer.style.top = '0';
+    adContainer.style.left = '0';
+    adContainer.style.width = '100%';
+    adContainer.style.height = '100%';
+    adContainer.style.zIndex = '9999'; // Ensure it is on top
     adContainer.style.display = 'block';
-    
+
     // Create and show the blurry overlay
     let blurryOverlay = document.createElement('div');
     blurryOverlay.id = 'blurry-overlay';
@@ -67,41 +73,85 @@ function showAdWithBlur() {
     blurryOverlay.style.left = '0';
     blurryOverlay.style.width = '100%';
     blurryOverlay.style.height = '100%';
-    blurryOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    blurryOverlay.style.backdropFilter = 'blur(5px)';
-    blurryOverlay.style.zIndex = '9998';
-    blurryOverlay.style.display = 'block'; // Show the blurry overlay
+    blurryOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)'; // Darker blur
+    blurryOverlay.style.backdropFilter = 'blur(8px)'; // More intense blur
+    blurryOverlay.style.zIndex = '9998'; // Ensure overlay is on top
+
+    // Create countdown timer
+    let countdownTimer = document.createElement('div');
+    countdownTimer.id = 'countdown-timer';
+    countdownTimer.style.position = 'absolute';
+    countdownTimer.style.top = '10px';
+    countdownTimer.style.right = '10px';
+    countdownTimer.style.color = 'white'; // White text
+    countdownTimer.style.fontSize = '24px'; // Font size for visibility
+    countdownTimer.style.zIndex = '9999'; // Ensure countdown is on top
+
+    // Create close button
+    let closeButton = document.createElement('div');
+    closeButton.id = 'close-ad';
+    closeButton.style.position = 'absolute';
+    closeButton.style.top = '10px';
+    closeButton.style.right = '10px';
+    closeButton.style.width = '40px';
+    closeButton.style.height = '40px';
+    closeButton.style.display = 'none'; // Hidden initially
+    closeButton.style.display = 'flex';
+    closeButton.style.alignItems = 'center';
+    closeButton.style.justifyContent = 'center';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.color = 'white'; // White X
+    closeButton.style.fontSize = '24px'; // Font size for the close icon
+    closeButton.style.zIndex = '9999'; // Ensure close button is on top
+
+    // Add close icon to button
+    let closeIcon = document.createElement('span');
+    closeIcon.textContent = '×';
+    closeButton.appendChild(closeIcon);
+
+    // Add elements to the body
     document.body.appendChild(blurryOverlay);
+    document.body.appendChild(countdownTimer);
+    document.body.appendChild(closeButton);
+
+    // Start countdown
+    let timeLeft = 5;
+    countdownTimer.textContent = timeLeft;
+
+    let countdownInterval = setInterval(function() {
+        timeLeft--;
+        countdownTimer.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            countdownTimer.style.display = 'none'; // Hide countdown timer
+            closeButton.style.display = 'flex'; // Show the close button
+        }
+    }, 1000);
+
+    // Add event listener for the close button
+    closeButton.addEventListener('click', function() {
+        hideAdWithBlur(); // Hide the ad and remove blur
+    });
 }
 
 // Function to hide the ad and remove the blur effect
 function hideAdWithBlur() {
     let adContainer = document.getElementById('interstitial-ad-container');
     adContainer.style.display = 'none';
-    
+
     // Remove the blurry overlay
     let blurryOverlay = document.getElementById('blurry-overlay');
     if (blurryOverlay) {
         blurryOverlay.style.display = 'none';
         document.body.removeChild(blurryOverlay);
     }
-}
 
-// Countdown timer for the close button
-function startCountdown() {
-    let countdownTimer = document.getElementById('countdown-timer');
+    // Remove the close button
     let closeButton = document.getElementById('close-ad');
-    let timeLeft = 5;
-
-    // Update countdown every second
-    let countdownInterval = setInterval(function() {
-        timeLeft--;
-        countdownTimer.textContent = timeLeft;
-        if (timeLeft <= 0) {
-            clearInterval(countdownInterval);
-            closeButton.disabled = false; // Enable the close button
-        }
-    }, 1000);
+    if (closeButton) {
+        closeButton.style.display = 'none';
+        document.body.removeChild(closeButton);
+    }
 }
 
 // Intersection Observer to show ad when the target div is in the viewport
@@ -121,9 +171,4 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('Interstitial trigger element not found.');
     }
-
-    // Close button functionality
-    document.getElementById('close-ad').addEventListener('click', function() {
-        hideAdWithBlur(); // Hide the ad and remove blur
-    });
 });
