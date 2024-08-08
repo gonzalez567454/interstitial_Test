@@ -17,21 +17,28 @@ top.window.VD_CONFIG = {
 var gptScript = document.createElement('script');
 gptScript.async = true;
 gptScript.src = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
+gptScript.onload = function() {
+    console.log('GPT script loaded successfully.');
+    initializeAd();
+};
+gptScript.onerror = function() {
+    console.error('Error loading GPT script.');
+};
 document.head.appendChild(gptScript);
 
-// Define and display the interstitial ad
-gptScript.onload = function() {
+function initializeAd() {
     window.googletag = window.googletag || {cmd: []};
 
     googletag.cmd.push(function() {
         // Define the interstitial ad slot
         googletag.defineSlot('/22243774984/Ernesto_InterstitialTest', [300, 250], 'interstitial-ad-container')
-                 .addService(googletag.pubads());
+            .addService(googletag.pubads());
 
         // Add event listener to show the ad when it's ready
         googletag.pubads().addEventListener('slotRenderEnded', function(event) {
             if (event.slot.getSlotElementId() === 'interstitial-ad-container') {
-                document.getElementById('interstitial-ad-container').style.display = 'block';
+                console.log('Interstitial ad rendered.');
+                showOverlayAndAd();
                 startCountdown();
             }
         });
@@ -45,7 +52,26 @@ gptScript.onload = function() {
     googletag.cmd.push(function() { 
         googletag.display('interstitial-ad-container'); 
     });
-};
+}
+
+// Function to show the ad and blurry overlay
+function showOverlayAndAd() {
+    // Create and style the blurry overlay
+    let overlay = document.createElement('div');
+    overlay.id = 'blurry-skin';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent background
+    overlay.style.backdropFilter = 'blur(10px)'; // Blurry effect
+    overlay.style.zIndex = '9998'; // Behind the ad container
+    document.body.appendChild(overlay);
+
+    // Show the ad container
+    document.getElementById('interstitial-ad-container').style.display = 'block';
+}
 
 // Countdown timer for the close button
 function startCountdown() {
@@ -71,16 +97,26 @@ document.addEventListener('DOMContentLoaded', function() {
     if (targetElement) {
         let observer = new IntersectionObserver(function(entries) {
             if (entries[0].isIntersecting === true) {
-                document.getElementById('interstitial-ad-container').style.display = 'block';
+                console.log('Interstitial trigger element is in the viewport.');
+                showOverlayAndAd(); // Show the overlay and ad
                 observer.disconnect(); // Stop observing after the ad is displayed
             }
         }, { threshold: [0.1] }); // Trigger when at least 10% of the element is visible
 
         observer.observe(targetElement);
+    } else {
+        console.error('Interstitial trigger element not found.');
     }
 
     // Close button functionality
-    document.getElementById('close-ad').addEventListener('click', function() {
-        document.getElementById('interstitial-ad-container').style.display = 'none';
+    document.addEventListener('click', function(event) {
+        if (event.target && event.target.id === 'close-ad') {
+            document.getElementById('interstitial-ad-container').style.display = 'none';
+            let overlay = document.getElementById('blurry-skin');
+            if (overlay) {
+                overlay.style.display = 'none'; // Hide the blurry skin
+                document.body.removeChild(overlay); // Remove the blurry skin from the DOM
+            }
+        }
     });
 });
