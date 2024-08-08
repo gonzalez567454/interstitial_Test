@@ -58,6 +58,9 @@ document.addEventListener('DOMContentLoaded', function() {
         blurryOverlay.style.zIndex = '9998';
         blurryOverlay.style.display = 'block'; // Show the blurry overlay
         document.body.appendChild(blurryOverlay);
+
+        // Setup and display the interstitial ad
+        setupAdSlot();
     }
 
     // Function to hide the interstitial ad and blurry overlay
@@ -70,6 +73,25 @@ document.addEventListener('DOMContentLoaded', function() {
             blurryOverlay.style.display = 'none';
             document.body.removeChild(blurryOverlay);
         }
+    }
+
+    // Function to set up the ad slot
+    function setupAdSlot() {
+        // Define ad parameters
+        var adParams = {
+            divId: 'interstitial-ad-container', 
+            tagId: '/22243774984/Ernesto_InterstitialTest', // Your specific ad tag ID
+            sizes: [[300, 250]], // Assuming your ad size is 300x250
+            position: 'center', // Center the ad
+            closeText: 'CLOSE AD',
+            fullscreen: true // Ensure the ad covers the entire screen
+        };
+
+        // Load the ad (mock example)
+        console.log('Setting up ad with parameters:', adParams);
+
+        // Here you would typically call the ad service with the adParams
+        // e.g., adService.loadAd(adParams);
     }
 
     // Show the interstitial ad when the page loads (or use an appropriate trigger)
