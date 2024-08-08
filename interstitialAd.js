@@ -1,99 +1,129 @@
-document.addEventListener('DOMContentLoaded', function() {
-    var adContainer = document.getElementById('interstitial-ad-container');
-    var closeButton;
-    var countdownTimer;
-    var countdownValue = 5;
-    var countdownInterval;
+// Configuration for the interstitial ad
+top.window.VD_CONFIG = {
+    divId: 'interstitial-ad-container',
+    tagId: '/22243774984/Ernesto_InterstitialTest',
+    sizes: [[300, 250]], // Interstitial ad size
+    extraMarginBottom: 0,
+    position: 'center', // Center the interstitial ad
+    closeText: 'CLOSE AD',
+    adjustHeightIfAnchorBannerIsDetected: false,
+    ovelapAnchorBanner: false,
+    attemps: 1,
+    interstitial: true, // Custom parameter to indicate this is an interstitial
+    fullscreen: true // Ensure the ad covers the entire screen
+};
 
-    // Function to create and show the interstitial ad
-    function showInterstitial() {
-        // Set up the ad container
-        adContainer.innerHTML = `
-            <div id="interstitial-content" style="position:relative; width:100%; height:100%; background-color:white; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-                <span id="countdown-timer" style="position:absolute; top:10px; left:10px; color:black;">${countdownValue}</span>
-                <button id="close-ad" style="position:absolute; top:10px; right:10px; background-color:red; color:white; border:none; padding:5px; cursor:pointer;">&times;</button>
-            </div>
-        `;
+// Load the GPT library
+var gptScript = document.createElement('script');
+gptScript.async = true;
+gptScript.src = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
+gptScript.onload = function() {
+    console.log('GPT script loaded successfully.');
+    initializeAd();
+};
+gptScript.onerror = function() {
+    console.error('Error loading GPT script.');
+};
+document.head.appendChild(gptScript);
 
-        closeButton = document.getElementById('close-ad');
-        countdownTimer = document.getElementById('countdown-timer');
+function initializeAd() {
+    window.googletag = window.googletag || {cmd: []};
 
-        // Function to start the countdown
-        function startCountdown() {
-            countdownValue = 5;
-            countdownTimer.textContent = countdownValue;
-            countdownTimer.style.display = 'block'; // Show the countdown timer
-            closeButton.style.display = 'none'; // Hide the close button initially
+    googletag.cmd.push(function() {
+        // Define the interstitial ad slot
+        googletag.defineSlot('/22243774984/Ernesto_InterstitialTest', [300, 250], 'interstitial-ad-container')
+            .addService(googletag.pubads());
 
-            countdownInterval = setInterval(function() {
-                countdownValue--;
-                countdownTimer.textContent = countdownValue;
-                if (countdownValue <= 0) {
-                    clearInterval(countdownInterval);
-                    countdownTimer.style.display = 'none'; // Hide the countdown timer
-                    closeButton.style.display = 'block'; // Show the close button
-                }
-            }, 1000);
-        }
-
-        // Show the ad container
-        adContainer.style.display = 'block';
-        startCountdown(); // Start the countdown timer
-
-        // Add event listener for the close button
-        closeButton.addEventListener('click', function() {
-            hideInterstitial(); // Hide the ad when the close button is clicked
+        // Add event listener to show the ad when it's ready
+        googletag.pubads().addEventListener('slotRenderEnded', function(event) {
+            if (event.slot.getSlotElementId() === 'interstitial-ad-container') {
+                console.log('Interstitial ad rendered.');
+                showAdWithBlur();
+                startCountdown();
+            }
         });
 
-        // Create and append the blurry overlay
-        var blurryOverlay = document.createElement('div');
-        blurryOverlay.id = 'blurry-overlay';
-        blurryOverlay.style.position = 'fixed';
-        blurryOverlay.style.top = '0';
-        blurryOverlay.style.left = '0';
-        blurryOverlay.style.width = '100%';
-        blurryOverlay.style.height = '100%';
-        blurryOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        blurryOverlay.style.backdropFilter = 'blur(5px)';
-        blurryOverlay.style.zIndex = '9998';
-        blurryOverlay.style.display = 'block'; // Show the blurry overlay
-        document.body.appendChild(blurryOverlay);
+        // Enable single request mode and start serving ads
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+    });
 
-        // Setup and display the interstitial ad
-        setupAdSlot();
+    // Display the ad
+    googletag.cmd.push(function() { 
+        googletag.display('interstitial-ad-container'); 
+    });
+}
+
+// Function to show the ad with a blur effect
+function showAdWithBlur() {
+    let adContainer = document.getElementById('interstitial-ad-container');
+    adContainer.style.display = 'block';
+    
+    // Create and show the blurry overlay
+    let blurryOverlay = document.createElement('div');
+    blurryOverlay.id = 'blurry-overlay';
+    blurryOverlay.style.position = 'fixed';
+    blurryOverlay.style.top = '0';
+    blurryOverlay.style.left = '0';
+    blurryOverlay.style.width = '100%';
+    blurryOverlay.style.height = '100%';
+    blurryOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    blurryOverlay.style.backdropFilter = 'blur(5px)';
+    blurryOverlay.style.zIndex = '9998';
+    blurryOverlay.style.display = 'block'; // Show the blurry overlay
+    document.body.appendChild(blurryOverlay);
+}
+
+// Function to hide the ad and remove the blur effect
+function hideAdWithBlur() {
+    let adContainer = document.getElementById('interstitial-ad-container');
+    adContainer.style.display = 'none';
+    
+    // Remove the blurry overlay
+    let blurryOverlay = document.getElementById('blurry-overlay');
+    if (blurryOverlay) {
+        blurryOverlay.style.display = 'none';
+        document.body.removeChild(blurryOverlay);
     }
+}
 
-    // Function to hide the interstitial ad and blurry overlay
-    function hideInterstitial() {
-        adContainer.style.display = 'none'; // Hide the ad container
+// Countdown timer for the close button
+function startCountdown() {
+    let countdownTimer = document.getElementById('countdown-timer');
+    let closeButton = document.getElementById('close-ad');
+    let timeLeft = 5;
 
-        // Remove the blurry overlay
-        var blurryOverlay = document.getElementById('blurry-overlay');
-        if (blurryOverlay) {
-            blurryOverlay.style.display = 'none';
-            document.body.removeChild(blurryOverlay);
+    // Update countdown every second
+    let countdownInterval = setInterval(function() {
+        timeLeft--;
+        countdownTimer.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+            closeButton.disabled = false; // Enable the close button
         }
+    }, 1000);
+}
+
+// Intersection Observer to show ad when the target div is in the viewport
+document.addEventListener('DOMContentLoaded', function() {
+    let targetElement = document.getElementById('interstitial-trigger');
+
+    if (targetElement) {
+        let observer = new IntersectionObserver(function(entries) {
+            if (entries[0].isIntersecting === true) {
+                console.log('Interstitial trigger element is in the viewport.');
+                showAdWithBlur(); // Show the ad with blur effect
+                observer.disconnect(); // Stop observing after the ad is displayed
+            }
+        }, { threshold: [0.1] }); // Trigger when at least 10% of the element is visible
+
+        observer.observe(targetElement);
+    } else {
+        console.error('Interstitial trigger element not found.');
     }
 
-    // Function to set up the ad slot
-    function setupAdSlot() {
-        // Define ad parameters
-        var adParams = {
-            divId: 'interstitial-ad-container', 
-            tagId: '/22243774984/Ernesto_InterstitialTest', // Your specific ad tag ID
-            sizes: [[300, 250]], // Assuming your ad size is 300x250
-            position: 'center', // Center the ad
-            closeText: 'CLOSE AD',
-            fullscreen: true // Ensure the ad covers the entire screen
-        };
-
-        // Load the ad (mock example)
-        console.log('Setting up ad with parameters:', adParams);
-
-        // Here you would typically call the ad service with the adParams
-        // e.g., adService.loadAd(adParams);
-    }
-
-    // Show the interstitial ad when the page loads (or use an appropriate trigger)
-    showInterstitial();
+    // Close button functionality
+    document.getElementById('close-ad').addEventListener('click', function() {
+        hideAdWithBlur(); // Hide the ad and remove blur
+    });
 });
