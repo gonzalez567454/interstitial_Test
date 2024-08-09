@@ -48,11 +48,6 @@ googletag.cmd.push(() => {
     // googletag.pubads().set("document_language", "en");
   }
 
-  // Define static ad slots.
-  googletag
-    .defineSlot("/6355419/Travel/Europe", [100, 100], "static-ad-1")
-    .addService(googletag.pubads());
-
   // Enable SRA and services.
   googletag.pubads().enableSingleRequest();
   googletag.enableServices();
