@@ -8,34 +8,31 @@
     <title>Vidoomy - Demo Slider</title>
     <link rel="shortcut icon" href="https://vidoomy.com/demos_new/plantillas_demos_v2/img/favicon.ico">
     <link href="https://vidoomy.com/demos_new/plantillas_demos_v2/styles.css" rel="stylesheet" type="text/css">
-<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
     <script src="interstitialAd.js"></script>
     <script type="text/javascript">
-	top.window.VD_CONFIG = {
-        divId: 'googletag-slider-ad', 
-        tagId: '/22243774984/Pubmatic_TestPage_300x250',
-        sizes: [[300, 250]],
-        extraMarginBottom: 0,
-        position: 'right',
-        closeText: 'CLOSE AD',
-        adjustHeightIfAnchorBannerIsDetected: false,
-        ovelapAnchorBanner: false,
-        attemps: 1
-    };
+        top.window.VD_CONFIG = {
+            divId: 'googletag-slider-ad',
+            tagId: '/22243774984/Pubmatic_TestPage_300x250',
+            sizes: [[300, 250]], // Interstitial ads usually have sizes like 1x1 or fullscreen
+            extraMarginBottom: 0,
+            position: 'center', // Center the interstitial ad
+            closeText: 'CLOSE AD',
+            adjustHeightIfAnchorBannerIsDetected: false,
+            ovelapAnchorBanner: false,
+            attemps: 1,
+        };
 
-    var adxBunlde = document.createElement('script');
-    adxBunlde.src = 'https://vpaid.vidoomy.com/adx/adx-bundle-prebid-v0.0.12_pubmatic_test_vidoomypbjs.js';
-    adxBunlde.async = true;
-    top.document.head.appendChild(adxBunlde);
-
+        var adxBundle = document.createElement('script');
+        adxBundle.src = 'https://vpaid.vidoomy.com/adx/adx-bundle-prebid-v0.0.12_pubmatic_test_vidoomypbjs.js';
+        adxBundle.async = true;
+        top.document.head.appendChild(adxBundle);
     </script>
-
 </head>
 
 <body id="bbdy">
   <nav>
-      <div class="navElements logo"><img  src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/logo.svg"></div>
-      <div class="navElements menu"><img  src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/ico_menu.svg"></div>
+      <div class="navElements logo"><img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/logo.svg"></div>
+      <div class="navElements menu"><img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/ico_menu.svg"></div>
   </nav>
 
   <div class="cover">
@@ -49,7 +46,7 @@
        <div class="articleSubtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
        </div>
        <figure class="video">
-          <img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/video.png" alt="video" >
+          <img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/video.png" alt="video">
        </figure>
       <div class="sub-headers">TRENDS</div>
       <div class="articleText"> 
@@ -59,9 +56,15 @@
         </p>
 
         <!-- CONTENIDO CREATIVIDAD -->
-            <div id="wrapper_wrapper">
-              <div class="wrapper" id="wrapper"></div>
+        <div id="wrapper_wrapper">
+          <div class="wrapper" id="wrapper">
+            <div id="interstitial-trigger"></div> <!-- Trigger element for the interstitial ad -->
+            <div id="interstitial-ad-container" style="display:none; position:fixed; top:50%; left:50%; width:300px; height:250px; transform:translate(-50%, -50%); z-index:9999; background-color:white; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+              <button id="close-ad" style="position:absolute; top:5px; right:5px; background-color:red; color:white; border:none; padding:5px; cursor:pointer;" disabled>CLOSE AD</button>
+              <span id="countdown-timer" style="position:absolute; top:5px; left:5px; color:black;">5</span>
             </div>
+          </div>
+        </div>
         <!-- FIN CONTENIDO CREATIVIDAD -->
 
         <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
@@ -105,10 +108,9 @@
    
   <footer>
     <div class="footerSubcont">
-      <div class="footerElements logo"><img  src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/logo_white.svg"></div>
+      <div class="footerElements logo"><img src="https://vidoomy.com/demos_new/plantillas_demos_v2/img/logo_white.svg"></div>
       <div class="footerElements disclaimer">LEGAL NOTICE &nbsp;|&nbsp;   PRIVACY POLICY</div>
     </div>
   </footer>
-
 </body>
 </html>
